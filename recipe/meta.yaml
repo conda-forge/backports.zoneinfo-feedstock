@@ -13,7 +13,7 @@ source:
     - tzdata-location.patch
 
 build:
-  number: 3
+  number: 4
   script: "{{ PYTHON }} -m pip install . -vv"
 
 requirements:
@@ -27,6 +27,7 @@ requirements:
     - backports
     - python
     - tzdata
+    - importlib_resources  # [py<37]
 
 test:
   imports:
