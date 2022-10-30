@@ -13,30 +13,32 @@ source:
     - tzdata-location.patch
 
 build:
-  number: 6
-  skip: true  # [py>39]
-  script: "{{ PYTHON }} -m pip install . -vv"
+  number: 7
+  script:
+    - "{{ PYTHON }} -m pip install . -vv"  # [py<39]
 
 requirements:
   build:
-    - python                                 # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-    - {{ compiler('c') }}
+    - python                                 # [py<39 and build_platform != target_platform]
+    - cross-python_{{ target_platform }}     # [py<39 and build_platform != target_platform]
+    - {{ compiler('c') }}                    # [py<39]
   host:
-    - backports
+    - backports            # [py<39]
     - python
     - pip
   run:
-    - backports
+    - backports            # [py<39]
     - python
-    - tzdata
+    - tzdata               # [py<39]
     - importlib_resources  # [py<37]
 
 test:
   imports:
-    - backports.zoneinfo
+    - backports.zoneinfo   # [py<39]
+    - zoneinfo             # [py>=39]
   commands:
-    - python -c "from backports.zoneinfo import ZoneInfo; from datetime import datetime; dt = datetime(2020, 10, 31, 12, tzinfo=ZoneInfo('America/Los_Angeles')); print(dt.tzname())"
+    - python -c "from backports.zoneinfo import ZoneInfo; from datetime import datetime; dt = datetime(2020, 10, 31, 12, tzinfo=ZoneInfo('America/Los_Angeles')); print(dt.tzname())"  # [py<39]
+    - python -c "from zoneinfo import ZoneInfo; from datetime import datetime; dt = datetime(2020, 10, 31, 12, tzinfo=ZoneInfo('America/Los_Angeles')); print(dt.tzname())"  # [py>=39]
 
 about:
   home: https://github.com/pganssle/zoneinfo
