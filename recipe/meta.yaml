@@ -13,7 +13,7 @@ source:
     - tzdata-location.patch
 
 build:
-  number: 8
+  number: 9
   script:
     - "{{ PYTHON }} -m pip install . -vv"  # [py<39]
 
@@ -22,6 +22,7 @@ requirements:
     - python                                 # [py<39 and build_platform != target_platform]
     - cross-python_{{ target_platform }}     # [py<39 and build_platform != target_platform]
     - {{ compiler('c') }}                    # [py<39]
+    - {{ stdlib("c") }}                      # [py<39]
   host:
     - backports            # [py<39]
     - python
