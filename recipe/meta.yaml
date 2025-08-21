@@ -7,13 +7,13 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: {{ hash }}
   patches:
     - tzdata-location.patch
 
 build:
-  number: 9
+  number: 10
   script:
     - "{{ PYTHON }} -m pip install . -vv"  # [py<39]
 
@@ -27,6 +27,7 @@ requirements:
     - backports            # [py<39]
     - python
     - pip
+    - setuptools >=40.8.0
   run:
     - backports            # [py<39]
     - python
